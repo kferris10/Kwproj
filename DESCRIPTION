@@ -1,0 +1,12 @@
+Package: Kwproj
+Title: Functions to Clean and Analyze Data for my Writing Project
+Version: 0.0.0.9000
+Authors@R: person("Kevin", "Ferris", , "kevin.ferris10@gmail.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph)
+Depends: R (>= 3.1.2),
+  dplyr (>= 0.4.1),
+  magrittr (>= 1.4)
+Imports:
+  MASS (>= 7.3-35)
+License: What license is it under?
+LazyData: true
