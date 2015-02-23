@@ -8,5 +8,5 @@ Depends: R (>= 3.1.2),
   magrittr (>= 1.4)
 Imports:
   MASS (>= 7.3-35)
-License: What license is it under?
+License: MIT + file LICENSE
 LazyData: true
