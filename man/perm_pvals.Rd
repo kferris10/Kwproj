@@ -6,6 +6,19 @@
 \usage{
 perm_pvals(B, npoints, data = pit_LvL, obs_diff = NULL)
 }
+\arguments{
+\item{B}{the number of permutations to run}
+
+\item{npoints}{the number of grid points in each direction.  Densities are
+calculated at each one of these grid points.}
+
+\item{data}{the data.frame containing pitch location and pitcher
+responsibility.  Defaults to \code{pit_LvL}.}
+
+\item{obs_diff}{The observed difference in densities.  If specified manually,
+should come from \code{\link{obs_diff}}.  Defaults to NULL, in which case
+it will be calculated using \code{\link{obs_diff}}.}
+}
 \description{
 Wrapper which uses \code{\link{dens_diff}}, \code{\link{perm_diffs}}, and
 \code{\link{calc_pvals}} to obtain p-values at each grid point.

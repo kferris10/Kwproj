@@ -6,8 +6,16 @@
 \usage{
 dens_diff(npoints, data = pit_LvL)
 }
+\arguments{
+\item{npoints}{the number of grid points in each direction.  Densities are
+calculated at each one of these grid points.}
+
+\item{data}{the data.frame containing pitch location and pitcher
+responsibility.  Defaults to \code{pit_LvL}.}
+}
 \description{
 Calculates the difference in pitch density when pitchers are responsible for
-the men on based and when they are not responsible.
+the men on based and when they are not responsible.  Densities are calculated
+using the \code{\link{kde2d}} function in the \code{\link{MASS}} package.
 }
 

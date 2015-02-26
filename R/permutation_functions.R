@@ -1,7 +1,12 @@
 #' Difference in Densities
 #'
 #' Calculates the difference in pitch density when pitchers are responsible for
-#' the men on based and when they are not responsible.
+#' the men on based and when they are not responsible.  Densities are calculated
+#' using the \code{\link{kde2d}} function in the \code{\link{MASS}} package.
+#' @param npoints the number of grid points in each direction.  Densities are
+#'   calculated at each one of these grid points.
+#' @param data the data.frame containing pitch location and pitcher
+#'   responsibility.  Defaults to \code{pit_LvL}.
 dens_diff <- function(npoints, data = pit_LvL) {
   # calculating densities when pitchers are responsible for men on base
   resp_dens <- data %>%
@@ -21,6 +26,11 @@ dens_diff <- function(npoints, data = pit_LvL) {
 #'
 #' Permutes the data B times and calculates the difference in densities for each
 #' of the B permutations.
+#' @param B the number of permutations to run
+#' @param npoints the number of grid points in each direction.  Densities are
+#'   calculated at each one of these grid points.
+#' @param data the data.frame containing pitch location and pitcher
+#'   responsibility.  Defaults to \code{pit_LvL}.
 perm_diffs <- function(B, npoints, data = pit_LvL) {
   diffs <- array(NA, dim = c(npoints, npoints, B))
 
@@ -48,6 +58,8 @@ perm_diffs <- function(B, npoints, data = pit_LvL) {
 #'
 #' For each density point on the grid, finds the proportion of permuted
 #' densities which are more extreme that the observed density.
+#' @param obs_diff The observed difference in densities.  Obatined from \code{\link{dens_diff}}.
+#' @param perms An array of the permuted densities.  Obtained from \code{\link{perm_diffs}}.
 calc_pvals <- function(obs_diff, perms) {
   # number of grid points
   npoints <- nrow(obs_diff)
@@ -68,6 +80,14 @@ calc_pvals <- function(obs_diff, perms) {
 #'
 #' Wrapper which uses \code{\link{dens_diff}}, \code{\link{perm_diffs}}, and
 #' \code{\link{calc_pvals}} to obtain p-values at each grid point.
+#' @param B the number of permutations to run
+#' @param npoints the number of grid points in each direction.  Densities are
+#'   calculated at each one of these grid points.
+#' @param data the data.frame containing pitch location and pitcher
+#'   responsibility.  Defaults to \code{pit_LvL}.
+#' @param obs_diff The observed difference in densities.  If specified manually,
+#'   should come from \code{\link{obs_diff}}.  Defaults to NULL, in which case
+#'   it will be calculated using \code{\link{obs_diff}}.
 perm_pvals <- function(B, npoints, data = pit_LvL, obs_diff = NULL) {
   # observed difference
   if(!is.null(obs_diff)) obs_diff <- dens_diff(npoints, data)
@@ -82,6 +102,9 @@ perm_pvals <- function(B, npoints, data = pit_LvL, obs_diff = NULL) {
 #' Turns matrix of p-values into a \code{\link{tbl}} into long format.
 #'
 #' A nice way to turn a matrix of p-values into long format.
+#' @param dat matrix of p-values.  Each row/column combination corresponds to a
+#'   horizontal/vertical location in the strikezone.  Obtained from
+#'   \code{\link{perm_pvals}}.
 pvals_to_long <- function(dat) {
   # turning into long data frame and returning
   dat %>%

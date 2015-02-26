@@ -6,6 +6,15 @@
 \usage{
 perm_diffs(B, npoints, data = pit_LvL)
 }
+\arguments{
+\item{B}{the number of permutations to run}
+
+\item{npoints}{the number of grid points in each direction.  Densities are
+calculated at each one of these grid points.}
+
+\item{data}{the data.frame containing pitch location and pitcher
+responsibility.  Defaults to \code{pit_LvL}.}
+}
 \description{
 Permutes the data B times and calculates the difference in densities for each
 of the B permutations.

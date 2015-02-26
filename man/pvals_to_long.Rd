@@ -6,6 +6,11 @@
 \usage{
 pvals_to_long(dat)
 }
+\arguments{
+\item{dat}{matrix of p-values.  Each row/column combination corresponds to a
+horizontal/vertical location in the strikezone.  Obtained from
+\code{\link{perm_pvals}}.}
+}
 \description{
 A nice way to turn a matrix of p-values into long format.
 }

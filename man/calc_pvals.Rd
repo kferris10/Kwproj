@@ -6,6 +6,11 @@
 \usage{
 calc_pvals(obs_diff, perms)
 }
+\arguments{
+\item{obs_diff}{The observed difference in densities.  Obatined from \code{\link{dens_diff}}.}
+
+\item{perms}{An array of the permuted densities.  Obtained from \code{\link{perm_diffs}}.}
+}
 \description{
 For each density point on the grid, finds the proportion of permuted
 densities which are more extreme that the observed density.
