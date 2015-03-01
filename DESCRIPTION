@@ -10,3 +10,5 @@ Imports:
   MASS (>= 7.3-35)
 License: MIT + file LICENSE
 LazyData: true
+Suggests: knitr
+VignetteBuilder: knitr

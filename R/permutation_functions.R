@@ -41,10 +41,10 @@ perm_diffs <- function(B, npoints, data = pit_LvL) {
     # permuted densities
     rperm_dens <- data %>%
       filter(perm_vec == "resp") %$%
-      kde2d(px, pz, n = npoints)
+      MASS::kde2d(px, pz, n = npoints)
     nperm_dens <- data %>%
       filter(perm_vec == "not") %$%
-      kde2d(px, pz, n = npoints)
+      MASS::kde2d(px, pz, n = npoints)
 
     # differences
     diffs[, , i] <- nperm_dens$z - rperm_dens$z
