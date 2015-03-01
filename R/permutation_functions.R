@@ -88,12 +88,16 @@ calc_pvals <- function(obs_diff, perms) {
 #' @param obs_diff The observed difference in densities.  If specified manually,
 #'   should come from \code{\link{obs_diff}}.  Defaults to NULL, in which case
 #'   it will be calculated using \code{\link{obs_diff}}.
-perm_pvals <- function(B, npoints, data = pit_LvL, obs_diff = NULL) {
+#' @param perm_dens The permuted densities.  If specified, must be a three
+#'   dimensional array returned from \code{\link{perm_dens}}.  Defaults to NULL,
+#'   in which case it will be calculated using \code{\link{perm_dens}}.
+perm_pvals <- function(B, npoints, data = pit_LvL,
+                       obs_diff = NULL, perm_dens = NULL) {
   # observed difference
-  if(!is.null(obs_diff)) obs_diff <- dens_diff(npoints, data)
+  if(is.null(obs_diff)) obs_diff <- dens_diff(npoints, data)
 
   # permutations
-  perm_dens <- perm_diffs(B, npoints, data)
+  if(is.null(perm_dens)) perm_dens <- perm_diffs(B, npoints, data)
 
   # obtaining p-values
   calc_pvals(obs_diff, perm_dens)

@@ -4,7 +4,7 @@
 \alias{perm_pvals}
 \title{Obtain p-values from Permutations}
 \usage{
-perm_pvals(B, npoints, data = pit_LvL, obs_diff = NULL)
+perm_pvals(B, npoints, data = pit_LvL, obs_diff = NULL, perm_dens = NULL)
 }
 \arguments{
 \item{B}{the number of permutations to run}
@@ -18,6 +18,10 @@ responsibility.  Defaults to \code{pit_LvL}.}
 \item{obs_diff}{The observed difference in densities.  If specified manually,
 should come from \code{\link{obs_diff}}.  Defaults to NULL, in which case
 it will be calculated using \code{\link{obs_diff}}.}
+
+\item{perm_dens}{The permuted densities.  If specified, must be a three
+dimensional array returned from \code{\link{perm_dens}}.  Defaults to NULL,
+in which case it will be calculated using \code{\link{perm_dens}}.}
 }
 \description{
 Wrapper which uses \code{\link{dens_diff}}, \code{\link{perm_diffs}}, and
