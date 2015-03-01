@@ -1,0 +1,115 @@
+---
+title: "Permutation Testing"
+author: "Kevin Ferris"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Permutation Testing}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, 
+                      message = F, 
+                      warning = F, 
+                      tidy = F, 
+                      comment = "#>", 
+                      eval = F)
+```
+
+
+This project uses permutation testing to compare density surfaces.  This testing was designed to work with the PITCHf/x data, but it could be easily customized to work with any dataset.  The workhorse function is `perm_pvals`.  This calculates p-values comparing for the observed difference in density surfaces at each of the $n \times n$ grid points.
+
+##  A Simple Example
+
+This compares the density surface for responsible pitchers to the density surface for pitchers who are not responsible.  
+
+```{r example, eval=TRUE}
+library(Kwproj)
+data(pit_LvL)
+simple_pvals <- perm_pvals(15, 10, pit_LvL)
+```
+
+## The Process
+
+1) calculate the observed difference in densities
+```{r obs-diff}
+npoints <- 15 # number of grid points to calculate densities
+B <- 10       # number of permutations
+obs_diff <- dens_diff(npoints, data = pit_LvL)
+```
+
+2) Run the permutations and calculate the p-values.  This is now one step.  `perm_pvals` calls on `perm_dens` to perform the permutations and `calc_pvals` to compare the permutations to the observed data.
+```{r perm-pvals}
+pvals <- perm_pvals(B, npoints, data = pit_LvL, obs_diff = obs_diff)
+```
+
+3) Here is where we'll want to make sure to save the object.  
+```{r save-pvals, eval=FALSE}
+save(pvals, file = "my-location.RData")
+```
+
+4) If you want, you can do some fun visualizations.  Here we plot the observed p-values by location
+
+```{r plots, message = FALSE}
+library(ggplot2)
+library(scales)
+pvals2 <- pvals_to_long(pvals) 
+
+# actual size
+qplot(row, col, data = pvals2, colour = pval) + 
+  scale_colour_gradient2(low = muted("red"), mid = "grey", high = muted("blue"), 
+                         midpoint = .2)
+
+# whether they're greater than 0.05
+pvals2 <- pvals2 %>% 
+  mutate(size = ifelse(pvals < .05, "mouse", "elephant") %>% 
+           factor(levels = c("mouse", "elephant")))
+qplot(row, col, data = pvals2, colour = size) + 
+  labs(x = "Horizontal Location", y = "Vertical Location") + 
+  theme_bw()
+```
+
+
+## Vignette Info
+
+Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
