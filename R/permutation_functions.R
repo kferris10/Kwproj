@@ -36,7 +36,7 @@ perm_diffs <- function(B, npoints, data = pit_LvL) {
 
   for(i in 1:B) {
     # permuted labels
-    perm_vec <- sample(pit_LvL$resp_pit)
+    perm_vec <- sample(data$resp_pit)
 
     # permuted densities
     rperm_dens <- data %>%
