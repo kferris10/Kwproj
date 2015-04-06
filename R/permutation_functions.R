@@ -109,7 +109,7 @@ perm_pvals <- function(B, npoints, data = pit_LvL,
 #' @param dat matrix of p-values.  Each row/column combination corresponds to a
 #'   horizontal/vertical location in the strikezone.  Obtained from
 #'   \code{\link{perm_pvals}}.
-pvals_to_long <- function(dat) {
+pvals_to_long <- function(dat, npoints = nrow(dat)) {
   # turning into long data frame and returning
   dat %>%
     data.frame() %>%
